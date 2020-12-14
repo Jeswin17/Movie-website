@@ -2,11 +2,12 @@ import React , {useEffect , useState} from 'react'
 import { API_URL , API_KEY , IMAGE_URL} from "../../Config"
 import MainImage from '../LandingPage/Sections/MainImage'
 import {Descriptions , Button , Row} from 'antd';
+import Favorite from './Sections/Favorite';
 
 import GridCard from '../LandingPage/Sections/GridCard'
 
 function MovieDetailPage(props) {
-
+    const movieId = props.match.params.movieId
     const [Movie , setMovie] = useState([])
     const [Crews , setCrews] = useState([])
     const [ActorToggle ,setActorToggle] = useState(false)
@@ -14,7 +15,7 @@ function MovieDetailPage(props) {
     useEffect(() =>{
 
         // to get the Movie Id of a particular movieId
-        const movieId = props.match.params.movieId
+     
 
         fetch(`${API_URL}movie/${movieId}?api_key=${API_KEY}&languages=en=US`)
             .then(response => response.json())
@@ -50,7 +51,7 @@ function MovieDetailPage(props) {
 
   <div style ={{ width: '85%' , margin: '1rem auto'}} >
         <div style ={{ display: 'flex' , justifyContent: 'flex-end'}}>
-            <Button>Add to favourites</Button>
+           <Favorite  userFrom={localStorage.getItem('userId')} movieId={movieId} movieInfo={Movie}/>  
         </div>
   {/* Movie Info table  */}
 
