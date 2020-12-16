@@ -1,11 +1,12 @@
 import React , {useEffect , useState} from 'react'
 import axios from 'axios';
-
+import { Button } from 'antd';
 
 function Favorite(props){
 
-    const [FavoriteNumber , setFavoriteNumber] = useState(0)
-    const [ Favorited , setFavorited] = useState(false)
+    const [FavoriteNumber, setFavoriteNumber] = useState(0)
+    const [Favorited, setFavorited] = useState(false)
+
 
     const variable  = {
         userFrom: props.userFrom,
@@ -14,28 +15,10 @@ function Favorite(props){
         movieImage: props.movieInfo.backdrop_path,
         movieRunTime: props.movieInfo.runtime
     }
-    useEffect(() =>{
-
-        axios.post('/api/favorite/favoriteNumber', variable)
-            .then(response =>{
-                if(response.data.success){
-                    setFavoriteNumber( response.data.favoriteNumber )
-                } else{
-                    alert('Failed to get the Favorite Number')
-                }
-            })
-
-            // API to get favorite
-        axios.post('/api/favorite/favorited', variable)
-            .then(response =>{
-                if(response.data.success){
-                    setFavorited( response.data.favorited )
-                } else{
-                    alert('Failed to get the Favorite Info');
-                }
-            })
-    }, [])
-
+    const raiseInvoiceClicked = () => {
+        const url = 'https://www.gv.com.sg/GVBuyTickets#/';
+        window.open(url, '_blank');
+    }
     const onClickFavorite = () => {
         if(Favorited) {
 // if already aDDED
@@ -68,10 +51,32 @@ function Favorite(props){
         }
     }
 
+    useEffect(() =>{
+
+        axios.post('/api/favorite/favoriteNumber', variable)
+            .then(response =>{
+                if(response.data.success){
+                    setFavoriteNumber( response.data.favoriteNumber )
+                } else{
+                    alert('Failed to get the Favorite Number')
+                }
+            })
+
+            // API to get favorite
+        axios.post('/api/favorite/favorited', variable)
+            .then(response =>{
+                if(response.data.success){
+                    setFavorited( response.data.favorited )
+                } else{
+                    alert('Failed to get the Favorite Info');
+                }
+            })
+    }, [])
 
     return(
         <div>
-             <button >{Favorited ? "remove from favorite " : "add to favorite"}{FavoriteNumber}</button>
+             <button onClick={onClickFavorite} >{Favorited ? "remove from favorite " : "add to favorite"} {FavoriteNumber}</button>
+             <button  onClick={raiseInvoiceClicked}>BUY TICKETS</button>
         </div>
     )
 }

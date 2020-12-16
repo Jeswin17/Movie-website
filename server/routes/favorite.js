@@ -10,7 +10,7 @@ const { auth } = require("../middleware/auth");
 
 
 
-router.post("/favoriteNumber", auth, (req, res) => {
+router.post("/favoriteNumber", (req, res) => {
 
     // find favorite information
     Favorite.find({"movieId":  req.body.movieId})
@@ -20,7 +20,7 @@ router.post("/favoriteNumber", auth, (req, res) => {
         })
 });
 
-router.post("/favorited", auth, (req, res) => {
+router.post("/favorited", (req, res) => {
 // find fav info inside favorite collection by movieId, userFrom
     Favorite.find({"movieId":  req.body.movieId, "userFrom": req.body.userFrom})
         .exec(( err , favorite ) => {
@@ -39,7 +39,7 @@ router.post("/favorited", auth, (req, res) => {
   
 });
 
-router.post("/addToFavorite", auth, (req, res) => {
+router.post("/addToFavorite", (req, res) => {
     // save the information about the movie user Id 
     const favorite = new Favorite(req.body)
     favorite.save((err,doc) => {
@@ -51,7 +51,7 @@ router.post("/addToFavorite", auth, (req, res) => {
     
     });
 
-    router.post("/removeFromFavorite", auth, (req, res) => {
+    router.post("/removeFromFavorite", (req, res) => {
         // save the information about the movie user Id 
         
         Favorite.findOneAndDelete({ movieId: req.body.movieId , userFrom : req.body.userFrom})
